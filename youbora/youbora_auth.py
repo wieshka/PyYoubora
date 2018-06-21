@@ -1,13 +1,10 @@
-import base64
-import datetime
-import dateutil.tz
 import hashlib
-from hashlib import sha256
 import logging
 import time
 from requests.auth import AuthBase
 from urlparse import parse_qsl, urlsplit, urlunsplit
 from urllib import urlencode
+
 logger = logging.getLogger(__name__)
 
 
@@ -22,7 +19,6 @@ class YouboraAuth(AuthBase):
 
     @staticmethod
     def _add_date_token(request, offset=36000):
-        # Add the API key as a query parameter
         url = request.url
         scheme, netloc, path, query_string, fragment = urlsplit(url)
         query_params = parse_qsl(query_string)
