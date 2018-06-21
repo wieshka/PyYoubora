@@ -1,1 +1,1 @@
-from .youbora import YouboraAPI
+from .youbora_auth import YouboraAuth
