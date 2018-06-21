@@ -44,3 +44,4 @@ class YouboraAuth(AuthBase):
         query_string = urlencode(self.query_params, doseq=True)
         final_url = urlunsplit((self.scheme, self.netloc, self.path.split("?")[0], query_string, self.fragment))
         request.url = final_url
+        logger.debug("Request URL: {0}".format(request.url))
