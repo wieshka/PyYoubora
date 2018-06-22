@@ -26,15 +26,6 @@ class YouboraClient(object):
         self.system_code = config["system_code"]
         self.time_offset = config.get("time_offset", 36000)
 
-    def __call__(self, config):
-        self.path = None
-        self.safe_path = None
-        self.managed_scope = ["system_code", "dateToken", "token"]
-        self.swagger_definition = config.get("swagger_definition")
-        self.api_secret = config.get("api_secret")
-        self.system_code = config["system_code"]
-        self.time_offset = config.get("time_offset", 36000)
-
     def _validate_path(self):
         for key, value in self.swagger_definition["paths"].items():
             if self.path == key:
