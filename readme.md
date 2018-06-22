@@ -28,3 +28,10 @@ response = requests.get('https://api.youbora.com/:system_code:/data',
     - Youbora Query Builder, interactive perhaps ?
     - Youbora Filter Builder, interactive perhaps ?
     - Response formatter for quick report/graph generations in various formats
+    
+## Good to know
+- as Youbora Swagger definition is available only via closed access Developers portal,
+ it is not included in this repository in order to respect NPAW approach to their documentation.
+- This code base (examples and config-sample.py) assumes that swagger is available within base directory as swagger.json
+- both example_x.py assumes that you have copied config-sample.py to config.py and have provided details there.
+- you can very easy use any other config approach - sysarg, env, AWS KMS, etc.
