@@ -1,10 +1,17 @@
-from config import API_SECRET, SYSTEM_CODE, OFFSET
+from config import API_SECRET, SYSTEM_CODE, OFFSET, SWAGGER_DEFINITION
 import logging
 import requests
-from youbora import YouboraAuth
+from youbora import YouboraClient
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+config = {
+    "swagger_definition": SWAGGER_DEFINITION,
+    "api_secret": API_SECRET,
+    "system_code": SYSTEM_CODE,
+    "time_offset": OFFSET
+}
 
 query_filter = [
     {
@@ -27,10 +34,8 @@ query = {
     "filter": str(query_filter),
 }
 
+client = YouboraClient(config)
 
 if __name__ == "__main__":
-    response = requests.get('https://api.youbora.com/:system_code:/data',
-                            params=query,
-                            auth=YouboraAuth(API_SECRET, SYSTEM_CODE,
-                                             offset=OFFSET))
-    print response.text
+    r = client.request("/:system_code:/data", query)
+    print r.json()
