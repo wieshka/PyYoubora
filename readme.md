@@ -1,12 +1,14 @@
 ## PyYoubora
 
-Authentication library for [amazing Python requests library](https://github.com/requests/requests)
- against NPAW Youbora API.
+Authentication library and wrapper for NPAW Youbora API.
  
-
+This module contains:
+- `YouboraAuth` - custom authorisation provider for Python Requests, check `example_auth.py`
+- `YouboraClient` - Wrapper which utilises Swagger definition to validate requests
+ against NPAW Youbora before executing Request, check `example_client.py`
  
 ## Getting started:
-- check out included `example.py`
+- check out included `example_auth.py` and `example_client.py`
 - but, basically this gives you:
 
 ```python
@@ -22,7 +24,7 @@ response = requests.get('https://api.youbora.com/:system_code:/data',
 
 ## Future considerations (wish list):
 - to extend library with _helpers_ such as:
-    - Swagger API validation;
-    - Youbora Query Builder
-    - Youbora Filter Builder
-    - Response formatters for quick report/graph/dataset generations
+    - More Swagger API validations;
+    - Youbora Query Builder, interactive perhaps ?
+    - Youbora Filter Builder, interactive perhaps ?
+    - Response formatter for quick report/graph generations in various formats
