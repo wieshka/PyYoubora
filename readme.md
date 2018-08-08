@@ -8,7 +8,8 @@ This module contains:
  against NPAW Youbora before executing Request, check `example_client.py`
  
 ## Getting started:
-- check out included `example_auth.py` and `example_client.py`
+- install latest package with `pip install PyYoubora`
+- check out included `example_auth.py` and `example_client.py` to get understanding how to use
 - but, basically this gives you:
 
 ```python
