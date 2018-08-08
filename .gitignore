@@ -3,3 +3,6 @@ swagger.json
 .idea/
 config.py
 *.pyc
+PyYoubora.egg-info/
+build/
+dist/

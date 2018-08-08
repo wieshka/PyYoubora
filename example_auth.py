@@ -6,25 +6,24 @@ from youbora import YouboraAuth
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-query_filter = [
-    {
-        "name": "api_query",
-        "rules": {
-            "country":
-                [
-                    "Germany",
-                    "Italy"
-                ]
-        }
-    }
-]
-
 query = {
     "granularity": "minute",
     "metrics": "views",
     "fromDate": "lasthour",
     "type": "LIVE",
-    "filter": str(query_filter),
+    "csvFormat": "true",
+    "filter": str([
+    {
+        "name": "column_name",
+        "rules": {
+            "country":
+                [
+                    "Spain",
+                    "Italy"
+                ]
+        }
+    }
+])
 }
 
 if __name__ == "__main__":

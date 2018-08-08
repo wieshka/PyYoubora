@@ -1,0 +1,10 @@
+recursive-exclude __pycache__  *.pyc *.pyo *.orig
+
+exclude config.py
+exclude README
+include config-sample.py
+include example*
+include swagger.json
+
+prune venv
+prune .git

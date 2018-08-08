@@ -1,6 +1,5 @@
 from config import API_SECRET, SYSTEM_CODE, OFFSET, SWAGGER_DEFINITION
 import logging
-import requests
 from youbora import YouboraClient
 
 logging.basicConfig(level=logging.DEBUG)
@@ -13,26 +12,48 @@ config = {
     "time_offset": OFFSET
 }
 
-query_filter = [
-    {
-        "name": "api_query",
-        "rules": {
-            "country":
-                [
-                    "Germany",
-                    "Italy"
-                ]
-        }
+# query_filter = [n
+#     {
+#         "name": "api_query",
+#         "rules": {
+#             "country":
+#                 [
+#                     "Germany",
+#                     "Italy"
+#                 ]
+#         }
+#     }
+# ]
+
+query_filter = [{
+    "name": "Android+Android 7.0",
+    "rules": {
+        "os": ["Android"]
+    },
+    "exclusion": "include",
+    "color": "primary"
+}, {
+    "name": "iOS",
+    "color": "primary",
+    "rules": {
+        "os": ["iOS"]
     }
-]
+}]
 
 query = {
-    "granularity": "minute",
+    # "granularity": "minute",
     "metrics": "views",
     "fromDate": "lasthour",
     "type": "LIVE",
-    "filter": str(query_filter),
+    # "filter": str(query_filter),
+    # "csvFormat": "true",
+    "groupBy": ["os", "os_version"],
+    "orderBy": "views",
+    "limit": 1000,
+    "orderDirection": "desc",
+    "operation": "reducedisjoin",
 }
+
 
 client = YouboraClient(config)
 
