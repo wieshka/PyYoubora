@@ -36,3 +36,7 @@ response = requests.get('https://api.youbora.com/:system_code:/data',
 - This code base (examples and config-sample.py) assumes that swagger is available within base directory as swagger.json
 - both example_x.py assumes that you have copied config-sample.py to config.py and have provided details there.
 - you can very easy use any other config approach - sysarg, env, AWS KMS, etc.
+
+## Disclaimer
+- This has been created to ease my daily interaction with Youbora API as customer, I am not anyhow related to NPAW;
+- Publishing this repository has been agreed with NPAW;
