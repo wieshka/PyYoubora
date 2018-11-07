@@ -1,0 +1,2076 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Youbora API",
+        "description": "",
+        "version": "6.7.5.10.25"
+    },
+    "schemes": [
+        "http"
+    ],
+    "host": "api.youbora.com",
+    "basePath": "/",
+    "paths": {
+        "/version": {
+            "get": {
+                "summary": "Version Request; This is a simple request that returns the version of the API.",
+                "description": "Will return the API version, (e.g. '1.0.0 -- Initial version').",
+                "tags": [
+                    "Youbora API"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "0.0.0 -- Last change done."
+                    },
+                    "500": {
+                        "description": "Not Authorized",
+                        "schema": {
+                            "$ref": "#/definitions/DefaultError"
+                        }
+                    }
+                }
+            }
+        },
+        "/{system_code}/data": {
+            "get": {
+                "summary": "Data Request; This is the request that returns the data to build the charts.",
+                "description": "This is the request that returns the data to build the charts. Here you will be able to select the parameters to build different types of charts (pie chart, data grid, line chart, KPI, etc...), filter your data, apply different time ranges or choose from one of the different metrics available.",
+                "parameters": [
+                    {
+                        "name": "system_code",
+                        "in": "path",
+                        "description": "System code of the account that you want to retrieve data from",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "Indicates the initial date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. It also accepts the next predefined values: 'last5minutes', 'last10minutes', 'lasthour', 'last3hours', 'last6hours', 'yesterday', 'today'. This end point allows you to query for metrics from any time period",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "last6hours"
+                    },
+                    {
+                        "name": "toDate",
+                        "in": "query",
+                        "description": "Indicates the final date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. If one of the predefined values in fromDate is selected, toDate should not be filled up",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "In this field can be setted an indefinite number of filters. In all cases the structure must follow the next structure: &filter=filtername:{dimesion1:value1,value2},{dimension2:value3,value4}. If you want more information, there is a section below that explains how to create complex filters",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "granularity",
+                        "in": "query",
+                        "description": "Time granularity in which the data points are going to be returned. The available values are: 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "none",
+                        "enum": [
+                            "none",
+                            "minute",
+                            "hour",
+                            "day",
+                            "week",
+                            "month",
+                            "quarter",
+                            "year"
+                        ]
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type of data to filter, 'ALL', 'VOD', 'LIVE'. Can be used individually or with any combination (comma-separated)",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "ALL,VOD,LIVE",
+                        "enum": [
+                            "ALL",
+                            "VOD",
+                            "LIVE",
+                            "ALL,LIVE",
+                            "ALL,VOD",
+                            "LIVE,VOD",
+                            "ALL,VOD,LIVE"
+                        ]
+                    },
+                    {
+                        "name": "timezone",
+                        "in": "query",
+                        "description": "The time zone to apply in the dates queries. See table of Timezone Codes for valid entries",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "Europe/Madrid",
+                        "enum": [
+                            "Africa/Abidjan",
+                            "Africa/Accra",
+                            "Africa/Addis_Ababa",
+                            "Africa/Algiers",
+                            "Africa/Asmara",
+                            "Africa/Bamako",
+                            "Africa/Bangui",
+                            "Africa/Banjul",
+                            "Africa/Bissau",
+                            "Africa/Blantyre",
+                            "Africa/Brazzaville",
+                            "Africa/Bujumbura",
+                            "Africa/Cairo",
+                            "Africa/Casablanca",
+                            "Africa/Ceuta",
+                            "Africa/Conakry",
+                            "Africa/Dakar",
+                            "Africa/Dar_es_Salaam",
+                            "Africa/Djibouti",
+                            "Africa/Douala",
+                            "Africa/El_Aaiun",
+                            "Africa/Freetown",
+                            "Africa/Gaborone",
+                            "Africa/Harare",
+                            "Africa/Johannesburg",
+                            "Africa/Juba",
+                            "Africa/Kampala",
+                            "Africa/Khartoum",
+                            "Africa/Kigali",
+                            "Africa/Kinshasa",
+                            "Africa/Lagos",
+                            "Africa/Libreville",
+                            "Africa/Lome",
+                            "Africa/Luanda",
+                            "Africa/Lubumbashi",
+                            "Africa/Lusaka",
+                            "Africa/Malabo",
+                            "Africa/Maputo",
+                            "Africa/Maseru",
+                            "Africa/Mbabane",
+                            "Africa/Mogadishu",
+                            "Africa/Monrovia",
+                            "Africa/Nairobi",
+                            "Africa/Ndjamena",
+                            "Africa/Niamey",
+                            "Africa/Nouakchott",
+                            "Africa/Ouagadougou",
+                            "Africa/Porto-Novo",
+                            "Africa/Sao_Tome",
+                            "Africa/Tripoli",
+                            "Africa/Tunis",
+                            "Africa/Windhoek",
+                            "America/Adak",
+                            "America/Anchorage",
+                            "America/Anguilla",
+                            "America/Antigua",
+                            "America/Araguaina",
+                            "America/Argentina/Buenos_Aires",
+                            "America/Argentina/Catamarca",
+                            "America/Argentina/Cordoba",
+                            "America/Argentina/Jujuy",
+                            "America/Argentina/La_Rioja",
+                            "America/Argentina/Mendoza",
+                            "America/Argentina/Rio_Gallegos",
+                            "America/Argentina/Salta",
+                            "America/Argentina/San_Juan",
+                            "America/Argentina/San_Luis",
+                            "America/Argentina/Tucuman",
+                            "America/Argentina/Ushuaia",
+                            "America/Aruba",
+                            "America/Asuncion",
+                            "America/Atikokan",
+                            "America/Bahia",
+                            "America/Bahia_Banderas",
+                            "America/Barbados",
+                            "America/Belem",
+                            "America/Belize",
+                            "America/Blanc-Sablon",
+                            "America/Boa_Vista",
+                            "America/Bogota",
+                            "America/Boise",
+                            "America/Cambridge_Bay",
+                            "America/Campo_Grande",
+                            "America/Cancun",
+                            "America/Caracas",
+                            "America/Cayenne",
+                            "America/Cayman",
+                            "America/Chicago",
+                            "America/Chihuahua",
+                            "America/Costa_Rica",
+                            "America/Creston",
+                            "America/Cuiaba",
+                            "America/Curacao",
+                            "America/Danmarkshavn",
+                            "America/Dawson",
+                            "America/Dawson_Creek",
+                            "America/Denver",
+                            "America/Detroit",
+                            "America/Dominica",
+                            "America/Edmonton",
+                            "America/Eirunepe",
+                            "America/El_Salvador",
+                            "America/Fortaleza",
+                            "America/Glace_Bay",
+                            "America/Godthab",
+                            "America/Goose_Bay",
+                            "America/Grand_Turk",
+                            "America/Grenada",
+                            "America/Guadeloupe",
+                            "America/Guatemala",
+                            "America/Guayaquil",
+                            "America/Guyana",
+                            "America/Halifax",
+                            "America/Havana",
+                            "America/Hermosillo",
+                            "America/Indiana/Indianapolis",
+                            "America/Indiana/Knox",
+                            "America/Indiana/Marengo",
+                            "America/Indiana/Petersburg",
+                            "America/Indiana/Tell_City",
+                            "America/Indiana/Vevay",
+                            "America/Indiana/Vincennes",
+                            "America/Indiana/Winamac",
+                            "America/Inuvik",
+                            "America/Iqaluit",
+                            "America/Jamaica",
+                            "America/Juneau",
+                            "America/Kentucky/Louisville",
+                            "America/Kentucky/Monticello",
+                            "America/Kralendijk",
+                            "America/La_Paz",
+                            "America/Lima",
+                            "America/Los_Angeles",
+                            "America/Lower_Princes",
+                            "America/Maceio",
+                            "America/Managua",
+                            "America/Manaus",
+                            "America/Marigot",
+                            "America/Martinique",
+                            "America/Matamoros",
+                            "America/Mazatlan",
+                            "America/Menominee",
+                            "America/Merida",
+                            "America/Metlakatla",
+                            "America/Mexico_City",
+                            "America/Miquelon",
+                            "America/Moncton",
+                            "America/Monterrey",
+                            "America/Montevideo",
+                            "America/Montserrat",
+                            "America/Nassau",
+                            "America/New_York",
+                            "America/Nipigon",
+                            "America/Nome",
+                            "America/Noronha",
+                            "America/North_Dakota/Beulah",
+                            "America/North_Dakota/Center",
+                            "America/North_Dakota/New_Salem",
+                            "America/Ojinaga",
+                            "America/Panama",
+                            "America/Pangnirtung",
+                            "America/Paramaribo",
+                            "America/Phoenix",
+                            "America/Port-au-Prince",
+                            "America/Port_of_Spain",
+                            "America/Porto_Velho",
+                            "America/Puerto_Rico",
+                            "America/Rainy_River",
+                            "America/Rankin_Inlet",
+                            "America/Recife",
+                            "America/Regina",
+                            "America/Resolute",
+                            "America/Rio_Branco",
+                            "America/Santa_Isabel",
+                            "America/Santarem",
+                            "America/Santiago",
+                            "America/Santo_Domingo",
+                            "America/Sao_Paulo",
+                            "America/Scoresbysund",
+                            "America/Sitka",
+                            "America/St_Barthelemy",
+                            "America/St_Johns",
+                            "America/St_Kitts",
+                            "America/St_Lucia",
+                            "America/St_Thomas",
+                            "America/St_Vincent",
+                            "America/Swift_Current",
+                            "America/Tegucigalpa",
+                            "America/Thule",
+                            "America/Thunder_Bay",
+                            "America/Tijuana",
+                            "America/Toronto",
+                            "America/Tortola",
+                            "America/Vancouver",
+                            "America/Whitehorse",
+                            "America/Winnipeg",
+                            "America/Yakutat",
+                            "America/Yellowknife",
+                            "Antarctica/Casey",
+                            "Antarctica/Davis",
+                            "Antarctica/DumontDUrville",
+                            "Antarctica/Macquarie",
+                            "Antarctica/Mawson",
+                            "Antarctica/McMurdo",
+                            "Antarctica/Palmer",
+                            "Antarctica/Rothera",
+                            "Antarctica/Syowa",
+                            "Antarctica/Vostok",
+                            "Arctic/Longyearbyen",
+                            "Asia/Aden",
+                            "Asia/Almaty",
+                            "Asia/Amman",
+                            "Asia/Anadyr",
+                            "Asia/Aqtau",
+                            "Asia/Aqtobe",
+                            "Asia/Ashgabat",
+                            "Asia/Baghdad",
+                            "Asia/Bahrain",
+                            "Asia/Baku",
+                            "Asia/Bangkok",
+                            "Asia/Beirut",
+                            "Asia/Bishkek",
+                            "Asia/Brunei",
+                            "Asia/Choibalsan",
+                            "Asia/Chongqing",
+                            "Asia/Colombo",
+                            "Asia/Damascus",
+                            "Asia/Dhaka",
+                            "Asia/Dili",
+                            "Asia/Dubai",
+                            "Asia/Dushanbe",
+                            "Asia/Gaza",
+                            "Asia/Harbin",
+                            "Asia/Hebron",
+                            "Asia/Ho_Chi_Minh",
+                            "Asia/Hong_Kong",
+                            "Asia/Hovd",
+                            "Asia/Irkutsk",
+                            "Asia/Jakarta",
+                            "Asia/Jayapura",
+                            "Asia/Jerusalem",
+                            "Asia/Kabul",
+                            "Asia/Kamchatka",
+                            "Asia/Karachi",
+                            "Asia/Kashgar",
+                            "Asia/Kathmandu",
+                            "Asia/Khandyga",
+                            "Asia/Kolkata",
+                            "Asia/Krasnoyarsk",
+                            "Asia/Kuala_Lumpur",
+                            "Asia/Kuching",
+                            "Asia/Kuwait",
+                            "Asia/Macau",
+                            "Asia/Magadan",
+                            "Asia/Makassar",
+                            "Asia/Manila",
+                            "Asia/Muscat",
+                            "Asia/Nicosia",
+                            "Asia/Novokuznetsk",
+                            "Asia/Novosibirsk",
+                            "Asia/Omsk",
+                            "Asia/Oral",
+                            "Asia/Phnom_Penh",
+                            "Asia/Pontianak",
+                            "Asia/Pyongyang",
+                            "Asia/Qatar",
+                            "Asia/Qyzylorda",
+                            "Asia/Rangoon",
+                            "Asia/Riyadh",
+                            "Asia/Sakhalin",
+                            "Asia/Samarkand",
+                            "Asia/Seoul",
+                            "Asia/Shanghai",
+                            "Asia/Singapore",
+                            "Asia/Taipei",
+                            "Asia/Tashkent",
+                            "Asia/Tbilisi",
+                            "Asia/Tehran",
+                            "Asia/Thimphu",
+                            "Asia/Tokyo",
+                            "Asia/Ulaanbaatar",
+                            "Asia/Urumqi",
+                            "Asia/Ust-Nera",
+                            "Asia/Vientiane",
+                            "Asia/Vladivostok",
+                            "Asia/Yakutsk",
+                            "Asia/Yekaterinburg",
+                            "Asia/Yerevan",
+                            "Atlantic/Azores",
+                            "Atlantic/Bermuda",
+                            "Atlantic/Canary",
+                            "Atlantic/Cape_Verde",
+                            "Atlantic/Faroe",
+                            "Atlantic/Madeira",
+                            "Atlantic/Reykjavik",
+                            "Atlantic/South_Georgia",
+                            "Atlantic/St_Helena",
+                            "Atlantic/Stanley",
+                            "Australia/Adelaide",
+                            "Australia/Brisbane",
+                            "Australia/Broken_Hill",
+                            "Australia/Currie",
+                            "Australia/Darwin",
+                            "Australia/Eucla",
+                            "Australia/Hobart",
+                            "Australia/Lindeman",
+                            "Australia/Lord_Howe",
+                            "Australia/Melbourne",
+                            "Australia/Perth",
+                            "Australia/Sydney",
+                            "Europe/Amsterdam",
+                            "Europe/Andorra",
+                            "Europe/Athens",
+                            "Europe/Belgrade",
+                            "Europe/Berlin",
+                            "Europe/Bratislava",
+                            "Europe/Brussels",
+                            "Europe/Bucharest",
+                            "Europe/Budapest",
+                            "Europe/Busingen",
+                            "Europe/Chisinau",
+                            "Europe/Copenhagen",
+                            "Europe/Dublin",
+                            "Europe/Gibraltar",
+                            "Europe/Guernsey",
+                            "Europe/Helsinki",
+                            "Europe/Isle_of_Man",
+                            "Europe/Istanbul",
+                            "Europe/Jersey",
+                            "Europe/Kaliningrad",
+                            "Europe/Kiev",
+                            "Europe/Lisbon",
+                            "Europe/Ljubljana",
+                            "Europe/London",
+                            "Europe/Luxembourg",
+                            "Europe/Madrid",
+                            "Europe/Malta",
+                            "Europe/Mariehamn",
+                            "Europe/Minsk",
+                            "Europe/Monaco",
+                            "Europe/Moscow",
+                            "Europe/Oslo",
+                            "Europe/Paris",
+                            "Europe/Podgorica",
+                            "Europe/Prague",
+                            "Europe/Riga",
+                            "Europe/Rome",
+                            "Europe/Samara",
+                            "Europe/San_Marino",
+                            "Europe/Sarajevo",
+                            "Europe/Simferopol",
+                            "Europe/Skopje",
+                            "Europe/Sofia",
+                            "Europe/Stockholm",
+                            "Europe/Tallinn",
+                            "Europe/Tirane",
+                            "Europe/Uzhgorod",
+                            "Europe/Vaduz",
+                            "Europe/Vatican",
+                            "Europe/Vienna",
+                            "Europe/Vilnius",
+                            "Europe/Volgograd",
+                            "Europe/Warsaw",
+                            "Europe/Zagreb",
+                            "Europe/Zaporozhye",
+                            "Europe/Zurich",
+                            "Indian/Antananarivo",
+                            "Indian/Chagos",
+                            "Indian/Christmas",
+                            "Indian/Cocos",
+                            "Indian/Comoro",
+                            "Indian/Kerguelen",
+                            "Indian/Mahe",
+                            "Indian/Maldives",
+                            "Indian/Mauritius",
+                            "Indian/Mayotte",
+                            "Indian/Reunion",
+                            "Pacific/Apia",
+                            "Pacific/Auckland",
+                            "Pacific/Chatham",
+                            "Pacific/Chuuk",
+                            "Pacific/Easter",
+                            "Pacific/Efate",
+                            "Pacific/Enderbury",
+                            "Pacific/Fakaofo",
+                            "Pacific/Fiji",
+                            "Pacific/Funafuti",
+                            "Pacific/Galapagos",
+                            "Pacific/Gambier",
+                            "Pacific/Guadalcanal",
+                            "Pacific/Guam",
+                            "Pacific/Honolulu",
+                            "Pacific/Johnston",
+                            "Pacific/Kiritimati",
+                            "Pacific/Kosrae",
+                            "Pacific/Kwajalein",
+                            "Pacific/Majuro",
+                            "Pacific/Marquesas",
+                            "Pacific/Midway",
+                            "Pacific/Nauru",
+                            "Pacific/Niue",
+                            "Pacific/Norfolk",
+                            "Pacific/Noumea",
+                            "Pacific/Pago_Pago",
+                            "Pacific/Palau",
+                            "Pacific/Pitcairn",
+                            "Pacific/Pohnpei",
+                            "Pacific/Port_Moresby",
+                            "Pacific/Rarotonga",
+                            "Pacific/Saipan",
+                            "Pacific/Tahiti",
+                            "Pacific/Tarawa",
+                            "Pacific/Tongatapu",
+                            "Pacific/Wake",
+                            "Pacific/Wallis",
+                            "UTC"
+                        ]
+                    },
+                    {
+                        "name": "operation",
+                        "in": "query",
+                        "description": "The type of operation to apply. Three operation types: Join: Allows aggregate different series into one. For example, this operation can aggregate values corresponding of Mediterranean countries into one serie Reducejoin: This option performs a join operation and deletes the temporal dimension in the aggregation, so the final result will be the KPI of the aggregation Reducedisjoin: Perform reduce operation and splits the results into the passed groupBy values",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "enum": [
+                            "join",
+                            "reducejoin",
+                            "reducedisjoin"
+                        ]
+                    },
+                    {
+                        "name": "metrics",
+                        "in": "query",
+                        "description": "Selection of the metric that will be computed. If you want to know more about the different kind of metrics, please follow this link",
+                        "required": true,
+                        "type": "string",
+                        "format": "string",
+                        "enum": [
+                            "views",
+                            "successfulPlays",
+                            "concurrent",
+                            "hours",
+                            "traffic",
+                            "startFailures",
+                            "startFailuresCount",
+                            "exits",
+                            "exitsCount",
+                            "bufferRatio",
+                            "bufferEvents",
+                            "joinTime",
+                            "bitrate",
+                            "stops",
+                            "inStreamFailures",
+                            "inStreamFailuresCount",
+                            "uniques",
+                            "uniquesBuffer",
+                            "uniquesPlayFailure",
+                            "uniquesEbvs",
+                            "abandonUsers",
+                            "healthyPlays",
+                            "uniqueHealthyPlays",
+                            "rebufferedPlays",
+                            "activeSessions",
+                            "activeUniques",
+                            "viewsVsPlaytime",
+                            "viewsVsBitrate",
+                            "viewsVsBuffer",
+                            "viewsVsJointime",
+                            "playtimeVsBuffer",
+                            "playtimeVsJointime",
+                            "playtimeVsBitrate",
+                            "viewsVsEbvs",
+                            "viewsVsCompletionRate",
+                            "preAdPlays",
+                            "preAdJointime",
+                            "preAdPlaytime",
+                            "preAdStops",
+                            "preAdDropsOnAd",
+                            "midAdPlays",
+                            "midAdJointime",
+                            "midAdPlaytime",
+                            "midAdStops",
+                            "midAdDropsOnAd",
+                            "postAdPlays",
+                            "postAdJointime",
+                            "postAdPlaytime",
+                            "postAdStops",
+                            "postAdDropsOnAd",
+                            "preAdBuffer",
+                            "midAdBuffer",
+                            "postAdBuffer"
+                        ]
+                    },
+                    {
+                        "name": "groupBy",
+                        "in": "query",
+                        "description": "Selector of the dimension where the different entities will be grouped by. As an example, if the dimension selected is Country, all the different entities; EEUU, Canada, Spain… will be returned",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "enum": [
+                            "asn",
+                            "balanced",
+                            "brand",
+                            "browser",
+                            "browser_ver",
+                            "cdn",
+                            "cdnnodehost",
+                            "city",
+                            "connectiontype",
+                            "country",
+                            "countrycode",
+                            "device",
+                            "device_model",
+                            "device_type",
+                            "device_vendor",
+                            "domain",
+                            "errorcode",
+                            "event_type",
+                            "exitstatus",
+                            "extraparam0",
+                            "extraparam1",
+                            "extraparam10",
+                            "extraparam11",
+                            "extraparam12",
+                            "extraparam13",
+                            "extraparam14",
+                            "extraparam15",
+                            "extraparam16",
+                            "extraparam17",
+                            "extraparam18",
+                            "extraparam19",
+                            "extraparam2",
+                            "extraparam20",
+                            "extraparam21",
+                            "extraparam3",
+                            "extraparam4",
+                            "extraparam5",
+                            "extraparam6",
+                            "extraparam7",
+                            "extraparam8",
+                            "extraparam9",
+                            "global",
+                            "happiness",
+                            "ip",
+                            "isp",
+                            "lastinstreamerrorcode",
+                            "lat",
+                            "lon",
+                            "nodetype",
+                            "os",
+                            "os_version",
+                            "plugindevice",
+                            "pluginmetadata",
+                            "pluginversion",
+                            "postal_code",
+                            "rendition",
+                            "smartswitchresultcode",
+                            "smartswitchuuid",
+                            "state",
+                            "state_province",
+                            "stream",
+                            "title",
+                            "title2",
+                            "token",
+                            "transaction",
+                            "type",
+                            "typeview",
+                            "user",
+                            "useragent"
+                        ]
+                    },
+                    {
+                        "name": "orderBy",
+                        "in": "query",
+                        "description": "This determines which order will follow the response. For example, if Views is selected, the entities will be ordered by the number of views",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "enum": [
+                            "views",
+                            "entities"
+                        ]
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Maximum number of results returned",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "orderDirection",
+                        "in": "query",
+                        "description": "This parameter determines if the order is ascendent or descendent",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ]
+                    },
+                    {
+                        "name": "kpiGroup",
+                        "in": "query",
+                        "description": "By selecting one of the predefined kpi groups, you will see the data of the system selected compared to the data of the group",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "outFile",
+                        "in": "query",
+                        "description": "True or False to download the data or not",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "outFilename",
+                        "in": "query",
+                        "description": "Name of the file that will be downloaded",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "csvFormat",
+                        "in": "query",
+                        "description": "If True, the response is formatted as a csv, if False, the response is formatted as a JSON",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "false",
+                        "enum": [
+                            "true",
+                            "false"
+                        ]
+                    },
+                    {
+                        "name": "dateToken",
+                        "in": "query",
+                        "description": "Token that determines the duration of the request",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Timed token to expire requests. Please, there is a section below that explains how to generate tokens",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "tags": [
+                    "Youbora API"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/DataMain"
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/DefaultError"
+                        }
+                    }
+                }
+            }
+        },
+        "/{system_code}/rawdata": {
+            "get": {
+                "summary": "RawData Request; These calls are used to obtain the tracking lines.",
+                "description": "This is the request that returns all the views based on the parameters chosen. For example, if you select and specific Country, you will retrieve all the sessions for this country for the selected date range.",
+                "parameters": [
+                    {
+                        "name": "system_code",
+                        "in": "path",
+                        "description": "System code of the account that you want to retrieve data from",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "Indicates the initial date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. It also accepts the next predefined values: 'last5minutes', 'last10minutes', 'lasthour', 'last3hours', 'last6hours', 'yesterday', 'today'. This end point allows you to query for metrics from any time period",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "last6hours"
+                    },
+                    {
+                        "name": "toDate",
+                        "in": "query",
+                        "description": "Indicates the final date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. If one of the predefined values in fromDate is selected, toDate should not be filled up",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Indicates the offset date. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type of data to filter, 'ALL', 'VOD', 'LIVE'. Can be used individually or with any combination (comma-separated)",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "ALL,VOD,LIVE",
+                        "enum": [
+                            "ALL",
+                            "VOD",
+                            "LIVE",
+                            "ALL,LIVE",
+                            "ALL,VOD",
+                            "LIVE,VOD",
+                            "ALL,VOD,LIVE"
+                        ]
+                    },
+                    {
+                        "name": "timezone",
+                        "in": "query",
+                        "description": "The time zone to apply in the dates queries. See table of Timezone Codes for valid entries",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "Europe/Madrid",
+                        "enum": [
+                            "Africa/Abidjan",
+                            "Africa/Accra",
+                            "Africa/Addis_Ababa",
+                            "Africa/Algiers",
+                            "Africa/Asmara",
+                            "Africa/Bamako",
+                            "Africa/Bangui",
+                            "Africa/Banjul",
+                            "Africa/Bissau",
+                            "Africa/Blantyre",
+                            "Africa/Brazzaville",
+                            "Africa/Bujumbura",
+                            "Africa/Cairo",
+                            "Africa/Casablanca",
+                            "Africa/Ceuta",
+                            "Africa/Conakry",
+                            "Africa/Dakar",
+                            "Africa/Dar_es_Salaam",
+                            "Africa/Djibouti",
+                            "Africa/Douala",
+                            "Africa/El_Aaiun",
+                            "Africa/Freetown",
+                            "Africa/Gaborone",
+                            "Africa/Harare",
+                            "Africa/Johannesburg",
+                            "Africa/Juba",
+                            "Africa/Kampala",
+                            "Africa/Khartoum",
+                            "Africa/Kigali",
+                            "Africa/Kinshasa",
+                            "Africa/Lagos",
+                            "Africa/Libreville",
+                            "Africa/Lome",
+                            "Africa/Luanda",
+                            "Africa/Lubumbashi",
+                            "Africa/Lusaka",
+                            "Africa/Malabo",
+                            "Africa/Maputo",
+                            "Africa/Maseru",
+                            "Africa/Mbabane",
+                            "Africa/Mogadishu",
+                            "Africa/Monrovia",
+                            "Africa/Nairobi",
+                            "Africa/Ndjamena",
+                            "Africa/Niamey",
+                            "Africa/Nouakchott",
+                            "Africa/Ouagadougou",
+                            "Africa/Porto-Novo",
+                            "Africa/Sao_Tome",
+                            "Africa/Tripoli",
+                            "Africa/Tunis",
+                            "Africa/Windhoek",
+                            "America/Adak",
+                            "America/Anchorage",
+                            "America/Anguilla",
+                            "America/Antigua",
+                            "America/Araguaina",
+                            "America/Argentina/Buenos_Aires",
+                            "America/Argentina/Catamarca",
+                            "America/Argentina/Cordoba",
+                            "America/Argentina/Jujuy",
+                            "America/Argentina/La_Rioja",
+                            "America/Argentina/Mendoza",
+                            "America/Argentina/Rio_Gallegos",
+                            "America/Argentina/Salta",
+                            "America/Argentina/San_Juan",
+                            "America/Argentina/San_Luis",
+                            "America/Argentina/Tucuman",
+                            "America/Argentina/Ushuaia",
+                            "America/Aruba",
+                            "America/Asuncion",
+                            "America/Atikokan",
+                            "America/Bahia",
+                            "America/Bahia_Banderas",
+                            "America/Barbados",
+                            "America/Belem",
+                            "America/Belize",
+                            "America/Blanc-Sablon",
+                            "America/Boa_Vista",
+                            "America/Bogota",
+                            "America/Boise",
+                            "America/Cambridge_Bay",
+                            "America/Campo_Grande",
+                            "America/Cancun",
+                            "America/Caracas",
+                            "America/Cayenne",
+                            "America/Cayman",
+                            "America/Chicago",
+                            "America/Chihuahua",
+                            "America/Costa_Rica",
+                            "America/Creston",
+                            "America/Cuiaba",
+                            "America/Curacao",
+                            "America/Danmarkshavn",
+                            "America/Dawson",
+                            "America/Dawson_Creek",
+                            "America/Denver",
+                            "America/Detroit",
+                            "America/Dominica",
+                            "America/Edmonton",
+                            "America/Eirunepe",
+                            "America/El_Salvador",
+                            "America/Fortaleza",
+                            "America/Glace_Bay",
+                            "America/Godthab",
+                            "America/Goose_Bay",
+                            "America/Grand_Turk",
+                            "America/Grenada",
+                            "America/Guadeloupe",
+                            "America/Guatemala",
+                            "America/Guayaquil",
+                            "America/Guyana",
+                            "America/Halifax",
+                            "America/Havana",
+                            "America/Hermosillo",
+                            "America/Indiana/Indianapolis",
+                            "America/Indiana/Knox",
+                            "America/Indiana/Marengo",
+                            "America/Indiana/Petersburg",
+                            "America/Indiana/Tell_City",
+                            "America/Indiana/Vevay",
+                            "America/Indiana/Vincennes",
+                            "America/Indiana/Winamac",
+                            "America/Inuvik",
+                            "America/Iqaluit",
+                            "America/Jamaica",
+                            "America/Juneau",
+                            "America/Kentucky/Louisville",
+                            "America/Kentucky/Monticello",
+                            "America/Kralendijk",
+                            "America/La_Paz",
+                            "America/Lima",
+                            "America/Los_Angeles",
+                            "America/Lower_Princes",
+                            "America/Maceio",
+                            "America/Managua",
+                            "America/Manaus",
+                            "America/Marigot",
+                            "America/Martinique",
+                            "America/Matamoros",
+                            "America/Mazatlan",
+                            "America/Menominee",
+                            "America/Merida",
+                            "America/Metlakatla",
+                            "America/Mexico_City",
+                            "America/Miquelon",
+                            "America/Moncton",
+                            "America/Monterrey",
+                            "America/Montevideo",
+                            "America/Montserrat",
+                            "America/Nassau",
+                            "America/New_York",
+                            "America/Nipigon",
+                            "America/Nome",
+                            "America/Noronha",
+                            "America/North_Dakota/Beulah",
+                            "America/North_Dakota/Center",
+                            "America/North_Dakota/New_Salem",
+                            "America/Ojinaga",
+                            "America/Panama",
+                            "America/Pangnirtung",
+                            "America/Paramaribo",
+                            "America/Phoenix",
+                            "America/Port-au-Prince",
+                            "America/Port_of_Spain",
+                            "America/Porto_Velho",
+                            "America/Puerto_Rico",
+                            "America/Rainy_River",
+                            "America/Rankin_Inlet",
+                            "America/Recife",
+                            "America/Regina",
+                            "America/Resolute",
+                            "America/Rio_Branco",
+                            "America/Santa_Isabel",
+                            "America/Santarem",
+                            "America/Santiago",
+                            "America/Santo_Domingo",
+                            "America/Sao_Paulo",
+                            "America/Scoresbysund",
+                            "America/Sitka",
+                            "America/St_Barthelemy",
+                            "America/St_Johns",
+                            "America/St_Kitts",
+                            "America/St_Lucia",
+                            "America/St_Thomas",
+                            "America/St_Vincent",
+                            "America/Swift_Current",
+                            "America/Tegucigalpa",
+                            "America/Thule",
+                            "America/Thunder_Bay",
+                            "America/Tijuana",
+                            "America/Toronto",
+                            "America/Tortola",
+                            "America/Vancouver",
+                            "America/Whitehorse",
+                            "America/Winnipeg",
+                            "America/Yakutat",
+                            "America/Yellowknife",
+                            "Antarctica/Casey",
+                            "Antarctica/Davis",
+                            "Antarctica/DumontDUrville",
+                            "Antarctica/Macquarie",
+                            "Antarctica/Mawson",
+                            "Antarctica/McMurdo",
+                            "Antarctica/Palmer",
+                            "Antarctica/Rothera",
+                            "Antarctica/Syowa",
+                            "Antarctica/Vostok",
+                            "Arctic/Longyearbyen",
+                            "Asia/Aden",
+                            "Asia/Almaty",
+                            "Asia/Amman",
+                            "Asia/Anadyr",
+                            "Asia/Aqtau",
+                            "Asia/Aqtobe",
+                            "Asia/Ashgabat",
+                            "Asia/Baghdad",
+                            "Asia/Bahrain",
+                            "Asia/Baku",
+                            "Asia/Bangkok",
+                            "Asia/Beirut",
+                            "Asia/Bishkek",
+                            "Asia/Brunei",
+                            "Asia/Choibalsan",
+                            "Asia/Chongqing",
+                            "Asia/Colombo",
+                            "Asia/Damascus",
+                            "Asia/Dhaka",
+                            "Asia/Dili",
+                            "Asia/Dubai",
+                            "Asia/Dushanbe",
+                            "Asia/Gaza",
+                            "Asia/Harbin",
+                            "Asia/Hebron",
+                            "Asia/Ho_Chi_Minh",
+                            "Asia/Hong_Kong",
+                            "Asia/Hovd",
+                            "Asia/Irkutsk",
+                            "Asia/Jakarta",
+                            "Asia/Jayapura",
+                            "Asia/Jerusalem",
+                            "Asia/Kabul",
+                            "Asia/Kamchatka",
+                            "Asia/Karachi",
+                            "Asia/Kashgar",
+                            "Asia/Kathmandu",
+                            "Asia/Khandyga",
+                            "Asia/Kolkata",
+                            "Asia/Krasnoyarsk",
+                            "Asia/Kuala_Lumpur",
+                            "Asia/Kuching",
+                            "Asia/Kuwait",
+                            "Asia/Macau",
+                            "Asia/Magadan",
+                            "Asia/Makassar",
+                            "Asia/Manila",
+                            "Asia/Muscat",
+                            "Asia/Nicosia",
+                            "Asia/Novokuznetsk",
+                            "Asia/Novosibirsk",
+                            "Asia/Omsk",
+                            "Asia/Oral",
+                            "Asia/Phnom_Penh",
+                            "Asia/Pontianak",
+                            "Asia/Pyongyang",
+                            "Asia/Qatar",
+                            "Asia/Qyzylorda",
+                            "Asia/Rangoon",
+                            "Asia/Riyadh",
+                            "Asia/Sakhalin",
+                            "Asia/Samarkand",
+                            "Asia/Seoul",
+                            "Asia/Shanghai",
+                            "Asia/Singapore",
+                            "Asia/Taipei",
+                            "Asia/Tashkent",
+                            "Asia/Tbilisi",
+                            "Asia/Tehran",
+                            "Asia/Thimphu",
+                            "Asia/Tokyo",
+                            "Asia/Ulaanbaatar",
+                            "Asia/Urumqi",
+                            "Asia/Ust-Nera",
+                            "Asia/Vientiane",
+                            "Asia/Vladivostok",
+                            "Asia/Yakutsk",
+                            "Asia/Yekaterinburg",
+                            "Asia/Yerevan",
+                            "Atlantic/Azores",
+                            "Atlantic/Bermuda",
+                            "Atlantic/Canary",
+                            "Atlantic/Cape_Verde",
+                            "Atlantic/Faroe",
+                            "Atlantic/Madeira",
+                            "Atlantic/Reykjavik",
+                            "Atlantic/South_Georgia",
+                            "Atlantic/St_Helena",
+                            "Atlantic/Stanley",
+                            "Australia/Adelaide",
+                            "Australia/Brisbane",
+                            "Australia/Broken_Hill",
+                            "Australia/Currie",
+                            "Australia/Darwin",
+                            "Australia/Eucla",
+                            "Australia/Hobart",
+                            "Australia/Lindeman",
+                            "Australia/Lord_Howe",
+                            "Australia/Melbourne",
+                            "Australia/Perth",
+                            "Australia/Sydney",
+                            "Europe/Amsterdam",
+                            "Europe/Andorra",
+                            "Europe/Athens",
+                            "Europe/Belgrade",
+                            "Europe/Berlin",
+                            "Europe/Bratislava",
+                            "Europe/Brussels",
+                            "Europe/Bucharest",
+                            "Europe/Budapest",
+                            "Europe/Busingen",
+                            "Europe/Chisinau",
+                            "Europe/Copenhagen",
+                            "Europe/Dublin",
+                            "Europe/Gibraltar",
+                            "Europe/Guernsey",
+                            "Europe/Helsinki",
+                            "Europe/Isle_of_Man",
+                            "Europe/Istanbul",
+                            "Europe/Jersey",
+                            "Europe/Kaliningrad",
+                            "Europe/Kiev",
+                            "Europe/Lisbon",
+                            "Europe/Ljubljana",
+                            "Europe/London",
+                            "Europe/Luxembourg",
+                            "Europe/Madrid",
+                            "Europe/Malta",
+                            "Europe/Mariehamn",
+                            "Europe/Minsk",
+                            "Europe/Monaco",
+                            "Europe/Moscow",
+                            "Europe/Oslo",
+                            "Europe/Paris",
+                            "Europe/Podgorica",
+                            "Europe/Prague",
+                            "Europe/Riga",
+                            "Europe/Rome",
+                            "Europe/Samara",
+                            "Europe/San_Marino",
+                            "Europe/Sarajevo",
+                            "Europe/Simferopol",
+                            "Europe/Skopje",
+                            "Europe/Sofia",
+                            "Europe/Stockholm",
+                            "Europe/Tallinn",
+                            "Europe/Tirane",
+                            "Europe/Uzhgorod",
+                            "Europe/Vaduz",
+                            "Europe/Vatican",
+                            "Europe/Vienna",
+                            "Europe/Vilnius",
+                            "Europe/Volgograd",
+                            "Europe/Warsaw",
+                            "Europe/Zagreb",
+                            "Europe/Zaporozhye",
+                            "Europe/Zurich",
+                            "Indian/Antananarivo",
+                            "Indian/Chagos",
+                            "Indian/Christmas",
+                            "Indian/Cocos",
+                            "Indian/Comoro",
+                            "Indian/Kerguelen",
+                            "Indian/Mahe",
+                            "Indian/Maldives",
+                            "Indian/Mauritius",
+                            "Indian/Mayotte",
+                            "Indian/Reunion",
+                            "Pacific/Apia",
+                            "Pacific/Auckland",
+                            "Pacific/Chatham",
+                            "Pacific/Chuuk",
+                            "Pacific/Easter",
+                            "Pacific/Efate",
+                            "Pacific/Enderbury",
+                            "Pacific/Fakaofo",
+                            "Pacific/Fiji",
+                            "Pacific/Funafuti",
+                            "Pacific/Galapagos",
+                            "Pacific/Gambier",
+                            "Pacific/Guadalcanal",
+                            "Pacific/Guam",
+                            "Pacific/Honolulu",
+                            "Pacific/Johnston",
+                            "Pacific/Kiritimati",
+                            "Pacific/Kosrae",
+                            "Pacific/Kwajalein",
+                            "Pacific/Majuro",
+                            "Pacific/Marquesas",
+                            "Pacific/Midway",
+                            "Pacific/Nauru",
+                            "Pacific/Niue",
+                            "Pacific/Norfolk",
+                            "Pacific/Noumea",
+                            "Pacific/Pago_Pago",
+                            "Pacific/Palau",
+                            "Pacific/Pitcairn",
+                            "Pacific/Pohnpei",
+                            "Pacific/Port_Moresby",
+                            "Pacific/Rarotonga",
+                            "Pacific/Saipan",
+                            "Pacific/Tahiti",
+                            "Pacific/Tarawa",
+                            "Pacific/Tongatapu",
+                            "Pacific/Wake",
+                            "Pacific/Wallis",
+                            "UTC"
+                        ]
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "In this field can be setted an indefinite number of filters. In all cases the structure must follow the next structure: &filter=filtername:{dimesion1:value1,value2},{dimension2:value3,value4}. If you want more information, there is a section below that explains how to create complex filters",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Limit the number of results returned. Max allowed is 500.",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "csvFormat",
+                        "in": "query",
+                        "description": "If True, the response is formatted as a csv, if False, the response is formatted as a JSON",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "false",
+                        "enum": [
+                            "true",
+                            "false"
+                        ]
+                    },
+                    {
+                        "name": "dateToken",
+                        "in": "query",
+                        "description": " Token that determines the duration of the request",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "Timed token to expire requests. Please, there is a section below that explains how to generate tokens",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "tags": [
+                    "Youbora API"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/RawdataMain"
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/DefaultError"
+                        }
+                    }
+                }
+            }
+        },
+        "/{system_code}/rawdata/events": {
+            "get": {
+                "summary": "Events Request; These are the calls that return the events of a view.",
+                "description": "These are the calls that return the information related with the events of a given media session. A view, determined by a token, can have different events as Join Time, Buffers...",
+                "parameters": [
+                    {
+                        "name": "system_code",
+                        "in": "path",
+                        "description": "System code of the account that you want to retrieve data from",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Valid token of a specific view to obtain the events of this session. e.g. Token:{token:U_13_7kthuw4s5zy2bo76}",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "Indicates the initial date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. It also accepts the next predefined values: 'last5minutes', 'last10minutes', 'lasthour', 'last3hours', 'last6hours', 'yesterday', 'today'. This end point allows you to query for metrics from any time period",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "last6hours"
+                    },
+                    {
+                        "name": "toDate",
+                        "in": "query",
+                        "description": "Indicates the final date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. If one of the predefined values in fromDate is selected, toDate should not be filled up",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "tags": [
+                    "Youbora API"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/EventsMain"
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/DefaultError"
+                        }
+                    }
+                }
+            }
+        },
+        "/{system_code}/rawdata/switching": {
+            "get": {
+                "summary": "Switching_events Request; These are the calls that return all the switches of a view.",
+                "description": "These are the calls that return information related with any switches of a given media session. From here you can see, from an specific session, all the different kind of switches: Renditions, CDNs, Title, ISP and Custom Dimensions",
+                "parameters": [
+                    {
+                        "name": "system_code",
+                        "in": "path",
+                        "description": "System code of the account that you want to retrieve data from",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Valid token of a specific view to obtain the events of this session. e.g. Token:{token:U_13_7kthuw4s5zy2bo76}",
+                        "required": true,
+                        "type": "string",
+                        "format": "string"
+                    },
+                    {
+                        "name": "fromDate",
+                        "in": "query",
+                        "description": "Indicates the initial date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. It also accepts the next predefined values: 'last5minutes', 'last10minutes', 'lasthour', 'last3hours', 'last6hours', 'yesterday', 'today'. This endpoint allows you to query for metrics from any time period",
+                        "required": false,
+                        "type": "string",
+                        "format": "string",
+                        "default": "last6hours"
+                    },
+                    {
+                        "name": "toDate",
+                        "in": "query",
+                        "description": "Indicates the final date of the query. It accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss formats as well as a 'long' timestamp. If one of the predefined values in fromDate is selected, toDate should not be filled up",
+                        "required": false,
+                        "type": "string",
+                        "format": "string"
+                    }
+                ],
+                "tags": [
+                    "Youbora API"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/SwitchingMain"
+                        }
+                    },
+                    "500": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/DefaultError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "DefaultError": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/VersionMessage"
+                    }
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        ""
+                    ]
+                }
+            }
+        },
+        "VersionMessage": {
+            "type": "object",
+            "properties": {
+                "class": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "ERROR"
+                    ]
+                },
+                "message": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "Error Description"
+                    ]
+                },
+                "parameter": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "systemCode"
+                    ]
+                }
+            }
+        },
+        "SwitchingMain": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "string",
+                    "example": [
+                        ""
+                    ]
+                },
+                "data": {
+                    "$ref": "#/definitions/SwitchingDatas"
+                }
+            }
+        },
+        "SwitchingDatas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/SwitchingData"
+            }
+        },
+        "SwitchingData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Token"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "ALL"
+                },
+                "dimensions": {
+                    "$ref": "#/definitions/EventsDimensions"
+                },
+                "values": {
+                    "$ref": "#/definitions/SwitchingValues"
+                }
+            }
+        },
+        "SwitchingValues": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/SwitchingValue"
+            }
+        },
+        "SwitchingValue": {
+            "type": "object",
+            "properties": {
+                "time_string": {
+                    "type": "string",
+                    "example": "2016-11-03 12:31:41"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "UNKNOWN"
+                },
+                "event_time": {
+                    "example": 1111111111000
+                },
+                "entity": {
+                    "example": 11
+                },
+                "token": {
+                    "$ref": "#/definitions/DimensionToken"
+                }
+            }
+        },
+        "EventsMain": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "string",
+                    "example": [
+                        ""
+                    ]
+                },
+                "data": {
+                    "$ref": "#/definitions/EventsDatas"
+                }
+            }
+        },
+        "EventsDatas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/EventsData"
+            }
+        },
+        "EventsData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Token"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "ALL"
+                },
+                "dimensions": {
+                    "$ref": "#/definitions/EventsDimensions"
+                },
+                "values": {
+                    "$ref": "#/definitions/EventsValues"
+                }
+            }
+        },
+        "EventsDimensions": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/EventsDimension"
+            }
+        },
+        "EventsDimension": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/DimensionToken"
+                    }
+                }
+            }
+        },
+        "DimensionToken": {
+            "type": "string",
+            "example": "U_11111_c1xjr1u51pha036w_0"
+        },
+        "EventsValues": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/EventsValue"
+            }
+        },
+        "EventsValue": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "example": 4
+                },
+                "time_string": {
+                    "type": "string",
+                    "example": "2016-11-03 12:31:41"
+                },
+                "value": {
+                    "example": 20111
+                },
+                "event_time": {
+                    "example": 1111111111000
+                },
+                "token": {
+                    "$ref": "#/definitions/DimensionToken"
+                }
+            }
+        },
+        "DataMain": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "string",
+                    "example": [
+                        ""
+                    ]
+                },
+                "data": {
+                    "$ref": "#/definitions/DataDatas"
+                }
+            }
+        },
+        "DataDatas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/DataData"
+            }
+        },
+        "DataData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": ""
+                },
+                "type": {
+                    "type": "string",
+                    "example": "ALL"
+                },
+                "dimensions": {
+                    "type": "string",
+                    "example": [
+                        ""
+                    ]
+                },
+                "metrics": {
+                    "$ref": "#/definitions/Metrics"
+                }
+            }
+        },
+        "Metrics": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/Metric"
+            }
+        },
+        "Metric": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "example": "views"
+                },
+                "label": {
+                    "type": "string",
+                    "example": "Play Attempts"
+                },
+                "magnitudes": {
+                    "$ref": "#/definitions/Magnitudes"
+                },
+                "values": {
+                    "$ref": "#/definitions/Values"
+                }
+            }
+        },
+        "Magnitudes": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "type": "string",
+                    "example": "Minute"
+                },
+                "y": {
+                    "type": "string",
+                    "example": "Plays"
+                }
+            }
+        },
+        "Values": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/InternalData"
+            }
+        },
+        "InternalData": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "example": [
+                        [
+                            1478258640000,
+                            0
+                        ],
+                        [
+                            14546456,
+                            1
+                        ]
+                    ]
+                }
+            }
+        },
+        "RawdataMain": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "string",
+                    "example": [
+                        ""
+                    ]
+                },
+                "data": {
+                    "$ref": "#/definitions/RawdataDatas"
+                }
+            }
+        },
+        "RawdataDatas": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/RawdataData"
+            }
+        },
+        "RawdataData": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": ""
+                },
+                "type": {
+                    "type": "string",
+                    "example": "ALL"
+                },
+                "dimensions": {
+                    "type": "string",
+                    "example": [
+                        ""
+                    ]
+                },
+                "values": {
+                    "$ref": "#/definitions/RawdataValues"
+                }
+            }
+        },
+        "RawdataValues": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/RawdataValue"
+            }
+        },
+        "RawdataValue": {
+            "type": "object",
+            "properties": {
+                "end_at": {
+                    "type": "string",
+                    "example": "2016-11-07 15:39:11"
+                },
+                "avg_bitrate": {
+                    "type": "string",
+                    "example": "0.0"
+                },
+                "extraparams": {
+                    "$ref": "#/definitions/RawdataExtraparams"
+                },
+                "metadata": {
+                    "type": "string",
+                    "example": "metadata example"
+                },
+                "startup_time": {
+                    "example": 1417
+                },
+                "plugin_version": {
+                    "type": "string",
+                    "example": "plugin_version example"
+                },
+                "error_nice_code": {
+                    "type": "string",
+                    "example": "error_nice_code example"
+                },
+                "end_at_unix": {
+                    "type": "string",
+                    "example": "end_at_unix example"
+                },
+                "isp": {
+                    "type": "string",
+                    "example": "isp example"
+                },
+                "type": {
+                    "type": "string",
+                    "example": "type example"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "title example"
+                },
+                "buffer_underruns": {
+                    "type": "string",
+                    "example": "buffer_underruns example"
+                },
+                "balanced": {
+                    "type": "string",
+                    "example": "balanced example"
+                },
+                "session_time": {
+                    "type": "string",
+                    "example": "session_time example"
+                },
+                "duration": {
+                    "type": "string",
+                    "example": "duration example"
+                },
+                "node_type": {
+                    "type": "string",
+                    "example": "node_type example"
+                },
+                "full_resource": {
+                    "type": "string",
+                    "example": "full_resource example"
+                },
+                "rendition": {
+                    "type": "string",
+                    "example": "rendition example"
+                },
+                "outBytes": {
+                    "type": "string",
+                    "example": "outBytes example"
+                },
+                "init_at_unix": {
+                    "type": "string",
+                    "example": "init_at_unix example"
+                },
+                "device_json_data": {
+                    "type": "string",
+                    "example": "device_json_data example"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "id example"
+                },
+                "error_message": {
+                    "type": "string",
+                    "example": "error_message example"
+                },
+                "transaction_code": {
+                    "type": "string",
+                    "example": "transaction_code example"
+                },
+                "init_at": {
+                    "type": "string",
+                    "example": "init_at example"
+                },
+                "error_metadata": {
+                    "type": "string",
+                    "example": "error_metadata example"
+                },
+                "connection_type": {
+                    "type": "string",
+                    "example": "connection_type example"
+                },
+                "bandwidth": {
+                    "type": "string",
+                    "example": "bandwidth example"
+                },
+                "ip": {
+                    "type": "string",
+                    "example": "ip example"
+                },
+                "cdn": {
+                    "type": "string",
+                    "example": "cdn example"
+                },
+                "url": {
+                    "type": "string",
+                    "example": "url example"
+                },
+                "token": {
+                    "type": "string",
+                    "example": "token example"
+                },
+                "play_time": {
+                    "type": "string",
+                    "example": "play_time example"
+                },
+                "user_id": {
+                    "type": "string",
+                    "example": "user_id example"
+                },
+                "device_extra_info": {
+                    "type": "string",
+                    "example": "device_extra_info example"
+                },
+                "domain": {
+                    "type": "string",
+                    "example": "domain example"
+                },
+                "buffer_underrun_total": {
+                    "type": "string",
+                    "example": "buffer_underrun_total example"
+                },
+                "error_code": {
+                    "type": "string",
+                    "example": "error_code example"
+                },
+                "location": {
+                    "$ref": "#/definitions/RawdataLocation"
+                },
+                "node_host": {
+                    "type": "string",
+                    "example": "node_host example"
+                },
+                "happiness_score": {
+                    "type": "string",
+                    "example": "happiness_score example"
+                },
+                "device": {
+                    "$ref": "#/definitions/RawdataDevice"
+                },
+                "asn": {
+                    "type": "string",
+                    "example": "asn example"
+                }
+            }
+        },
+        "RawdataExtraparams": {
+            "type": "object",
+            "properties": {
+                "extraparam1": {
+                    "type": "string",
+                    "example": "extraparam1Name"
+                }
+            }
+        },
+        "RawdataLocation": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string",
+                    "example": "Spain"
+                },
+                "contry_code": {
+                    "type": "string",
+                    "example": "ES"
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Barcelona"
+                },
+                "lon": {
+                    "type": "string",
+                    "example": "2.159"
+                },
+                "state_province": {
+                    "type": "string",
+                    "example": "Barcelona"
+                },
+                "postal_code": {
+                    "type": "string",
+                    "example": "08006"
+                },
+                "lat": {
+                    "type": "string",
+                    "example": "40.123"
+                }
+            }
+        },
+        "RawdataDevice": {
+            "type": "object",
+            "properties": {
+                "device_model": {
+                    "type": "string",
+                    "example": "iPhone 4S"
+                },
+                "os": {
+                    "type": "string",
+                    "example": "iOS"
+                },
+                "browser": {
+                    "type": "string",
+                    "example": "Mobile Safari"
+                },
+                "os_version": {
+                    "type": "string",
+                    "example": "null"
+                },
+                "device_type": {
+                    "type": "string",
+                    "example": "smartphone"
+                },
+                "device_vendor": {
+                    "type": "string",
+                    "example": "Apple"
+                },
+                "deviceName": {
+                    "type": "string",
+                    "example": "iPhone"
+                },
+                "user_agent": {
+                    "type": "string",
+                    "example": "TV4Play/2.25/iPhone/iPhone4,1/9.3.5"
+                },
+                "browser_ver": {
+                    "type": "string",
+                    "example": ""
+                }
+            }
+        }
+    }
+}

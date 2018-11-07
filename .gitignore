@@ -1,5 +1,4 @@
 venv/
-swagger.json
 .idea/
 config.py
 *.pyc
